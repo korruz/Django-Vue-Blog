@@ -17,8 +17,16 @@ Including another URLconf
 from django.urls import path, include
 from rest_framework import routers
 from blog.views import BlogViewSet
+from drf_spectacular.views import SpectacularJSONAPIView, SpectacularRedocView, SpectacularSwaggerView
 
 router = routers.DefaultRouter()
 router.register("blog", BlogViewSet)
 
-urlpatterns = [path("api/", include(router.urls))]
+urlpatterns = [
+    path("api/", include(router.urls)),
+    # swagger
+    path('swagger/json/', SpectacularJSONAPIView.as_view(), name='schema'),
+    # Optional UI:
+    path('swagger/ui/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
+    path('swagger/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
+]
